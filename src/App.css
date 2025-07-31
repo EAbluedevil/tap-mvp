@@ -1,14 +1,39 @@
-/* 
-  © 2025 Waking Digital Solutions. All rights reserved.
-  This source code is proprietary and confidential.
-  Unauthorized copying, distribution, modification, or use is strictly prohibited.
+/*
+© 2025 Waking Digital Solutions. All rights reserved.
+This source code is proprietary and confidential.
+Unauthorized copying, distribution, modification, or use is strictly prohibited.
 */
 
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+html, body {
   margin: 0;
   padding: 0;
+  font-family: Arial, sans-serif;
+  height: 100%;
+}
+
+body {
+  background-color: #f4f4f4;
+}
+
+#root {
+  position: relative;
+  min-height: 100vh;
+  z-index: 0;
+}
+
+/* This makes the background image fill the body, behind all content */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('/DHS-Symbol.png') center center no-repeat;
+  background-size: 2000px;
+  opacity: 0.35;
+  z-index: -1;
+  pointer-events: none;
 }
 
 .App {
@@ -20,35 +45,139 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+/* Table styling */
 .matrix-table {
   border-collapse: collapse;
   width: 100%;
+  table-layout: auto;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(3px);
+  border-radius: 6px;
 }
 
 .matrix-table th,
 .matrix-table td {
   border: 1px solid #ccc;
-  padding: 8px;
+  padding: 2px; /* tighter padding */
   text-align: center;
-  min-width: 80px;
+  font-size: 11px;
+  white-space: normal;    /* allow wrapping */
+  word-wrap: break-word;
+  min-width: 60px;
+  max-width: 120px;
 }
 
 .matrix-table th {
-  background-color: #e9ecef;
+  background-color: #224f8f;
+  color: #fff;
+  min-width: 70px; /* ensure readable header cells */
 }
 
+/* Make time block headers wrap cleanly */
+.matrix-table th {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* Officer column styling */
+.matrix-table td:first-child {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Officer special styling */
 .officer-name {
   font-weight: bold;
   background-color: #d6eaf8;
 }
 
-/* Fade effect for first two blocks (columns 0 and 1 after officer name column) */
 .fade-column {
   opacity: 0.5;
 }
 
 .bags-cell {
-  background-color: #f0b400; /* bright yellow/gold */
-  color: #000000; /* black text for contrast */
+  background-color: #f0b400;
+  color: #000;
   font-weight: bold;
 }
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .matrix-table th,
+  .matrix-table td {
+    font-size: 10px;
+    padding: 2px;
+  }
+
+  .matrix-table th {
+    min-width: 60px;
+  }
+
+  .matrix-table td {
+    min-width: 60px;
+  }
+}
+
+/* PRINT STYLES - Fit neatly on pages without scaling */
+@media print {
+  body::before {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  .matrix-table {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000;
+    border-collapse: collapse;
+    width: 100% !important;
+    font-size: 8px; /* small readable size */
+  }
+  .matrix-table th {
+    background: #000 !important;
+    color: #fff !important;
+    padding: 2px;
+    min-width: 70px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    white-space: normal;
+    word-wrap: break-word;
+  }
+  .matrix-table td {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #000;
+    padding: 2px;
+  }
+  .matrix-table td:first-child,
+  .matrix-table th:first-child {
+    min-width: 90px !important;
+    max-width: 90px !important;
+    width: 90px !important;
+    font-size: 9px !important;
+    padding: 2px !important;
+    background: #eee !important;
+    font-weight: bold;
+    text-align: left;
+  }
+  .matrix-table th,
+  .matrix-table td {
+    position: static !important;
+  }
+  @page {
+    size: landscape;
+    margin: 0.4in;
+  }
+  .print-break {
+    page-break-before: always;
+  }
+  .print-break:first-of-type {
+    page-break-before: auto;
+  }
+  h3 {
+    margin: 0 0 0.15in 0;
+  }
+}
+
